@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using ToDo.Models;
 
@@ -11,6 +12,16 @@ namespace ToDoUnitTest
             var tarefa = new Tarefa("Descobrir pq Limited WIP não funciona");
 
             Assert.AreEqual("Descobrir pq Limited WIP não funciona", tarefa.Título);
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("     ")]
+        public void ConstrutorNãoDeveAceitarTítuloNuloOuVazio(string título)
+        {
+            var ex = Assert.Throws<Exception>(() => new Tarefa(título));
+            
+            Assert.AreEqual(ex.Message, "Título deve ter valor." );
         }
 
         [Test]

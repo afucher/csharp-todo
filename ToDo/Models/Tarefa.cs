@@ -1,4 +1,6 @@
-﻿namespace ToDo.Models
+﻿using System;
+
+namespace ToDo.Models
 {
     public class Tarefa
     {
@@ -7,6 +9,7 @@
 
         public Tarefa(string título)
         {
+            if(string.IsNullOrWhiteSpace(título)) throw new Exception("Título deve ter valor.");
             Título = título;
             _concluída = false;
         }
