@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using ToDo.Models;
 
-namespace ToDoUnitTest
+namespace ToDoUnitTest.Models
 {
     public class TarefaTestes
     {
