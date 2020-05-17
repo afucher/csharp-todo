@@ -20,5 +20,32 @@ namespace ToDoUnitTest
             
             Assert.False(tarefa.EstáConcluída());
         }
+
+        [Test]
+        public void ConcluirTarefaDeveDeixarTarefaComoConcluída()
+        {
+            //Arrange
+            var tarefa = new Tarefa("Finalizada");
+
+            //Act
+            tarefa.Concluir();
+            
+            //Assert
+            Assert.True(tarefa.EstáConcluída());
+        }
+        
+        [Test]
+        public void ConcluirDeveSerIdempotente()
+        {
+            //Arrange
+            var tarefa = new Tarefa("Finalizada");
+
+            //Act
+            tarefa.Concluir();
+            tarefa.Concluir();
+            
+            //Assert
+            Assert.True(tarefa.EstáConcluída());
+        }
     }
 }
