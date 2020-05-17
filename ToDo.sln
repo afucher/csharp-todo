@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo", "ToDo\ToDo.csproj", "{B4041A60-BAE6-43D6-BF5D-79035CD2CBA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoUnitTest", "ToDoUnitTest\ToDoUnitTest.csproj", "{24672AA2-A86A-4C15-880B-5BAF3AA6DC5C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{E1BBA04C-4770-46FC-83AD-207B61ACCE3A}"
+ProjectSection(SolutionItems) = preProject
+	.gitignore = .gitignore
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4041A60-BAE6-43D6-BF5D-79035CD2CBA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4041A60-BAE6-43D6-BF5D-79035CD2CBA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4041A60-BAE6-43D6-BF5D-79035CD2CBA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4041A60-BAE6-43D6-BF5D-79035CD2CBA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24672AA2-A86A-4C15-880B-5BAF3AA6DC5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24672AA2-A86A-4C15-880B-5BAF3AA6DC5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24672AA2-A86A-4C15-880B-5BAF3AA6DC5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24672AA2-A86A-4C15-880B-5BAF3AA6DC5C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
