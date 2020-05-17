@@ -8,5 +8,10 @@
         {
             Título = título;
         }
+
+        public bool EstáConcluída()
+        {
+            return false;
+        }
     }
 }

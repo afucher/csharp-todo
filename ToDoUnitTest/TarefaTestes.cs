@@ -12,5 +12,13 @@ namespace ToDoUnitTest
 
             Assert.AreEqual("Descobrir pq Limited WIP não funciona", tarefa.Título);
         }
+
+        [Test]
+        public void TarefaDeveSerNãoConcluídaQuandoCriada()
+        {
+            var tarefa = new Tarefa("Qualquer");
+            
+            Assert.False(tarefa.EstáConcluída());
+        }
     }
 }
