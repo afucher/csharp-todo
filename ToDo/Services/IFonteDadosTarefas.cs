@@ -1,0 +1,10 @@
+﻿using System.Collections.Generic;
+using ToDo.Models;
+
+namespace ToDo.Services
+{
+    public interface IFonteDadosTarefas
+    {
+        IReadOnlyCollection<Tarefa> ObterTarefas();
+    }
+}
