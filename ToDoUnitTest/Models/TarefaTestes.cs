@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using ToDo.Exceptions;
 using ToDo.Models;
 
 namespace ToDoUnitTest.Models
@@ -19,9 +20,7 @@ namespace ToDoUnitTest.Models
         [TestCase("     ")]
         public void ConstrutorNãoDeveAceitarTítuloNuloOuVazio(string título)
         {
-            var ex = Assert.Throws<Exception>(() => new Tarefa(título));
-            
-            Assert.AreEqual(ex.Message, "Título deve ter valor." );
+            Assert.Throws<TítuloInválidoExceção>(() => new Tarefa(título));
         }
 
         [Test]

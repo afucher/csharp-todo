@@ -1,4 +1,5 @@
 ﻿using System;
+using ToDo.Exceptions;
 
 namespace ToDo.Models
 {
@@ -9,7 +10,7 @@ namespace ToDo.Models
 
         public Tarefa(string título)
         {
-            if(string.IsNullOrWhiteSpace(título)) throw new Exception("Título deve ter valor.");
+            if(string.IsNullOrWhiteSpace(título)) throw new TítuloInválidoExceção();
             Título = título;
             _concluída = false;
         }
