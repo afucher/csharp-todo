@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using ToDo.Exceptions;
 using ToDo.Models;
 using ToDo.Services;
 
@@ -37,6 +38,37 @@ namespace ToDoUnitTest.Services
             var tarefas = serviço.ObterTarefas();
 
             tarefas.Should().BeEquivalentTo(tarefa);
+        }
+
+        [Test]
+        public void CriarTarefa_DeveRetornarTarefaCriada()
+        {
+            var fonteDeDados = Substitute.For<IFonteDadosTarefas>();
+            var serviço = new ServiçoTarefa(fonteDeDados);
+
+            var tarefa = serviço.CriaTarefa("título");
+
+            tarefa.Should().BeEquivalentTo(new Tarefa("título"));
+        }
+
+        [Test]
+        public void CriarTarefa_DeveCriarTarefaNaFonteDeDados()
+        {
+            var fonteDeDados = Substitute.For<IFonteDadosTarefas>();
+            var serviço = new ServiçoTarefa(fonteDeDados);
+
+            serviço.CriaTarefa("título");
+
+            fonteDeDados.Received().CriarTarefa(Arg.Is<Tarefa>(tarefa => tarefa.Título.Equals("título") && !tarefa.EstáConcluída()));
+        }
+
+        [Test]
+        public void CriarTarefa_DeveLançarExceção_QuandoTítuloForInválido()
+        {
+            var fonteDeDados = Substitute.For<IFonteDadosTarefas>();
+            var serviço = new ServiçoTarefa(fonteDeDados);
+
+            Assert.Throws<TítuloInválidoExceção>(() => serviço.CriaTarefa(""));
         }
     }
 }

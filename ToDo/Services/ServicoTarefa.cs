@@ -15,5 +15,14 @@ namespace ToDo.Services
         {
             return _fonteDadosTarefas.ObterTarefas();
         }
+
+        public Tarefa CriaTarefa(string título)
+        {
+            var tarefa = new Tarefa(título);
+
+            _fonteDadosTarefas.CriarTarefa(tarefa);
+            
+            return tarefa;
+        }
     }
 }
