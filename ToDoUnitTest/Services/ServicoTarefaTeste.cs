@@ -46,9 +46,13 @@ namespace ToDoUnitTest.Services
             var fonteDeDados = Substitute.For<IFonteDadosTarefas>();
             var serviço = new ServiçoTarefa(fonteDeDados);
 
+            fonteDeDados
+                .CriarTarefa(Arg.Is<Tarefa>(tarefa => tarefa.Título.Equals("título")))
+                .Returns(new Tarefa(1, "título"));
+
             var tarefa = serviço.CriaTarefa("título");
 
-            tarefa.Should().BeEquivalentTo(new Tarefa("título"));
+            tarefa.Should().BeEquivalentTo(new Tarefa(1,"título"));
         }
 
         [Test]

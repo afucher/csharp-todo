@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using NUnit.Framework;
 using ToDo.Exceptions;
 using ToDo.Models;
@@ -8,11 +9,23 @@ namespace ToDoUnitTest.Models
     public class TarefaTestes
     {
         [Test]
-        public void ConstrutorDaTarefaDeveReceberValoresIniciais()
+        public void ConstrutorDaTarefaDeveReceberEInicializarTítulo()
         {
             var tarefa = new Tarefa("Descobrir pq Limited WIP não funciona");
 
             Assert.AreEqual("Descobrir pq Limited WIP não funciona", tarefa.Título);
+        }
+
+        [Test]
+        public void DeveSerPossívelConstruirTarefaComId()
+        {
+            var tarefa = new Tarefa(1, "Tarefa com ID");
+            
+            tarefa.Should().BeEquivalentTo(new
+            {
+                Título = "Tarefa com ID",
+                Id = 1
+            });
         }
 
         [TestCase(null)]

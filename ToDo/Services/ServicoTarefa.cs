@@ -20,9 +20,7 @@ namespace ToDo.Services
         {
             var tarefa = new Tarefa(título);
 
-            _fonteDadosTarefas.CriarTarefa(tarefa);
-            
-            return tarefa;
+            return _fonteDadosTarefas.CriarTarefa(tarefa);
         }
     }
 }
