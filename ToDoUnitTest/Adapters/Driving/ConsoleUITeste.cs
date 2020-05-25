@@ -2,9 +2,12 @@
 using System.IO;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.Core.Arguments;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using ToDo.Adapters;
 using ToDo.Adapters.Driving;
+using ToDo.Exceptions;
 using ToDo.Models;
 using ToDo.Services;
 
@@ -46,6 +49,45 @@ namespace ToDoUnitTest.Adapters.Driving
             
             var consoleOutput = saídaDoConsole.ToString();
             consoleOutput.Should().Be("[1] - Primeira Tarefa" + Environment.NewLine + "[3] - Outra Tarefa" + Environment.NewLine);
+        }
+
+        [Test]
+        public void DevePerguntarTítuloDeTarefaECriar()
+        {
+            using var entradaDoConsole = new StringReader("Título da minha tarefa");
+            using var saídaDoConsole = new StringWriter();
+            Console.SetIn(entradaDoConsole);
+            Console.SetOut(saídaDoConsole);
+
+            var serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
+            serviçoTarefa
+                .CriaTarefa("Título da minha tarefa")
+                .Returns(new Tarefa(34, "Título da minha tarefa"));
+            var console = new ConsoleUI(serviçoTarefa);
+
+            console.CriarTarefa();
+
+            saídaDoConsole.ToString().Should().Be("Qual o título da tarefa: " + "Tarefa criada com Id: 34" + Environment.NewLine);
+        }
+        
+        [Test]
+        public void DeveMostrarMensagemDeErro_QuandoCriarTarefaComTítuloInválido()
+        {
+            
+            using var entradaDoConsole = new StringReader("       ");
+            using var saídaDoConsole = new StringWriter();
+            Console.SetIn(entradaDoConsole);
+            Console.SetOut(saídaDoConsole);
+
+            var serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
+            serviçoTarefa
+                .CriaTarefa("       ")
+                .Throws(new TítuloInválidoExceção());
+            var console = new ConsoleUI(serviçoTarefa);
+
+            console.CriarTarefa();
+
+            saídaDoConsole.ToString().Should().Be("Qual o título da tarefa: " + "Título inválido para tarefa" + Environment.NewLine);
         }
     }
 }

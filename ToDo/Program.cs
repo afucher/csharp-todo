@@ -1,5 +1,6 @@
 ﻿using System;
 using ToDo.Adapters;
+using ToDo.Adapters.Driving;
 using ToDo.Services;
 
 namespace ToDo
@@ -8,7 +9,14 @@ namespace ToDo
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var serviçoTarefa = new ServiçoTarefa(new TarefasEmMemória());
+            
+            var console = new ConsoleUI(serviçoTarefa);
+            
+            console.MostrarTarefas();
+            console.CriarTarefa();
+            console.MostrarTarefas();
+
         }
     }
 }

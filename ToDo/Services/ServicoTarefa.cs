@@ -11,12 +11,12 @@ namespace ToDo.Services
         {
             _fonteDadosTarefas = fonteDadosTarefas;
         }
-        public IReadOnlyCollection<Tarefa> ObterTarefas()
+        public virtual IReadOnlyCollection<Tarefa> ObterTarefas()
         {
             return _fonteDadosTarefas.ObterTarefas();
         }
 
-        public Tarefa CriaTarefa(string título)
+        public virtual Tarefa CriaTarefa(string título)
         {
             var tarefa = new Tarefa(título);
 

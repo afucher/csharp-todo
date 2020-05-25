@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using ToDo.Exceptions;
 using ToDo.Services;
 using static System.Console;
 
@@ -29,7 +31,21 @@ namespace ToDo.Adapters.Driving
             { 
                 WriteLine("Nenhuma tarefa");
             }
-            
+        }
+
+        public void CriarTarefa()
+        {
+            Write("Qual o título da tarefa: ");
+            var título = ReadLine();
+            try
+            {
+                var tarefa = _serviçoTarefa.CriaTarefa(título);
+                WriteLine($"Tarefa criada com Id: {tarefa.Id}"); 
+            }
+            catch (TítuloInválidoExceção e)
+            {
+                WriteLine("Título inválido para tarefa");
+            }
         }
     }
 }
