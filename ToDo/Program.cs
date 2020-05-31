@@ -16,6 +16,8 @@ namespace ToDo
             console.MostrarTarefas();
             console.CriarTarefa();
             console.MostrarTarefas();
+            console.ExcluirTarefa();
+            console.MostrarTarefas();
 
         }
     }

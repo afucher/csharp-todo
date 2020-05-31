@@ -89,5 +89,36 @@ namespace ToDoUnitTest.Adapters.Driving
 
             saídaDoConsole.ToString().Should().Be("Qual o título da tarefa: " + "Título inválido para tarefa" + Environment.NewLine);
         }
+
+        [Test]
+        public void ExcluirTarefa_DevePerguntarIdEExcluirTarfefa()
+        {
+            using var entradaDoConsole = new StringReader("1");
+            using var saídaDoConsole = new StringWriter();
+            Console.SetIn(entradaDoConsole);
+            Console.SetOut(saídaDoConsole);
+            
+            var serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
+            var console = new ConsoleUI(serviçoTarefa);
+
+            console.ExcluirTarefa();
+
+            saídaDoConsole.ToString().Should().Be("Qual id da tarefa para excluir: " + "Tarefa excluída." + Environment.NewLine);
+        }
+
+        [Test]
+        public void ExcluirTarefa_DeveChamarServiçoParaExcluirTarefa()
+        {
+            uint id = 1;
+            using var entradaDoConsole = new StringReader("1");
+            Console.SetIn(entradaDoConsole);
+            
+            var serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
+            var console = new ConsoleUI(serviçoTarefa);
+            
+            console.ExcluirTarefa();
+            
+            serviçoTarefa.Received().ExcluirTarefa(id);
+        }
     }
 }

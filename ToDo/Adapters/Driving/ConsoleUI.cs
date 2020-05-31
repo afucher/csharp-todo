@@ -47,5 +47,13 @@ namespace ToDo.Adapters.Driving
                 WriteLine("Título inválido para tarefa");
             }
         }
+
+        public void ExcluirTarefa()
+        {
+            Write("Qual id da tarefa para excluir: ");
+            var id = ReadLine();
+            _serviçoTarefa.ExcluirTarefa(Convert.ToUInt32(id));
+            WriteLine("Tarefa excluída.");
+        }
     }
 }
