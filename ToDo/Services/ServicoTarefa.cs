@@ -22,5 +22,10 @@ namespace ToDo.Services
 
             return _fonteDadosTarefas.CriarTarefa(tarefa);
         }
+
+        public void ExcluirTarefa(uint id)
+        {
+            _fonteDadosTarefas.ExcluirTarefa(id);
+        }
     }
 }

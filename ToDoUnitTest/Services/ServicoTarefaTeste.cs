@@ -74,5 +74,17 @@ namespace ToDoUnitTest.Services
 
             Assert.Throws<TítuloInválidoExceção>(() => serviço.CriaTarefa(""));
         }
+
+        [Test]
+        public void ExcluirTarefa_DeveExcluirTarefa()
+        {
+            var fonteDeDados = Substitute.For<IFonteDadosTarefas>();
+            var serviço = new ServiçoTarefa(fonteDeDados);
+            uint id = 2;
+
+            serviço.ExcluirTarefa(2);
+
+            fonteDeDados.Received().ExcluirTarefa(2);
+        }
     }
 }
