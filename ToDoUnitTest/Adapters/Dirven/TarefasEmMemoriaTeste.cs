@@ -53,5 +53,42 @@ namespace ToDoUnitTest.Adapters
             tarefa2.Id.Should().Be(2);
             tarefa3.Id.Should().Be(3);
         }
+
+        [Test]
+        public void DeveExcluirTarefa()
+        {
+            var tarefasEmMemória = new TarefasEmMemória();
+            var tarefa1 = tarefasEmMemória.CriarTarefa(new Tarefa("tarefa 1"));
+            var tarefa2 = tarefasEmMemória.CriarTarefa(new Tarefa("tarefa 2"));
+            
+            tarefasEmMemória.ExcluirTarefa(tarefa1.Id.GetValueOrDefault());
+
+            var tarefas = tarefasEmMemória.ObterTarefas();
+
+            tarefas.Should().BeEquivalentTo(tarefa2);
+        }
+
+        [Test]
+        public void NãoDeveEstourarErro_QuandoTentarExcluirTarefaQueNãoExiste()
+        {
+            var tarefasEmMemória = new TarefasEmMemória();
+
+            tarefasEmMemória.ExcluirTarefa(4);
+        }
+
+        [Test]
+        public void NãoDeveRemoverElements_QuandoTentarExcluirTarefaQueNãoExiste()
+        {
+            var tarefasEmMemória = new TarefasEmMemória();
+            var tarefa1 = tarefasEmMemória.CriarTarefa(new Tarefa("tarefa 1"));
+            var tarefa2 = tarefasEmMemória.CriarTarefa(new Tarefa("tarefa 2"));
+            var tarefa3 = tarefasEmMemória.CriarTarefa(new Tarefa("tarefa 3"));
+            
+            tarefasEmMemória.ExcluirTarefa(5);
+
+            var tarefas = tarefasEmMemória.ObterTarefas();
+            tarefas.Should().BeEquivalentTo(tarefa1, tarefa2, tarefa3);
+
+        }
     }
 }
