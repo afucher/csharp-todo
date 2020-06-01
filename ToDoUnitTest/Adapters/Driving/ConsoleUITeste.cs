@@ -15,12 +15,19 @@ namespace ToDoUnitTest.Adapters.Driving
 {
     public class ConsoleUITeste
     {
+        private ConsoleUI console;
+        private ServiçoTarefa serviçoTarefa;
+        [SetUp]
+        public void SetUp()
+        {
+            serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
+            console = new ConsoleUI(serviçoTarefa);
+        }
         [Test]
         public void DeveImprimirMensagemDeListaVazia_QuandoNãoHouverTarefas()
         {
             using var saídaDoConsole = new StringWriter();
             Console.SetOut(saídaDoConsole);
-            var console = new ConsoleUI(new ServiçoTarefa(new TarefasEmMemória()));
 
             console.MostrarTarefas();
             
@@ -33,8 +40,7 @@ namespace ToDoUnitTest.Adapters.Driving
         {
             using var saídaDoConsole = new StringWriter();
             Console.SetOut(saídaDoConsole);
-
-            var serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
+            
             serviçoTarefa
                 .ObterTarefas()
                 .Returns(new[]
@@ -43,8 +49,6 @@ namespace ToDoUnitTest.Adapters.Driving
                     new Tarefa(3, "Outra Tarefa")
                 });
             
-            var console = new ConsoleUI(serviçoTarefa);
-
             console.MostrarTarefas();
             
             var consoleOutput = saídaDoConsole.ToString();
@@ -59,11 +63,9 @@ namespace ToDoUnitTest.Adapters.Driving
             Console.SetIn(entradaDoConsole);
             Console.SetOut(saídaDoConsole);
 
-            var serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
             serviçoTarefa
                 .CriaTarefa("Título da minha tarefa")
                 .Returns(new Tarefa(34, "Título da minha tarefa"));
-            var console = new ConsoleUI(serviçoTarefa);
 
             console.CriarTarefa();
 
@@ -78,12 +80,10 @@ namespace ToDoUnitTest.Adapters.Driving
             using var saídaDoConsole = new StringWriter();
             Console.SetIn(entradaDoConsole);
             Console.SetOut(saídaDoConsole);
-
-            var serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
+            
             serviçoTarefa
                 .CriaTarefa("       ")
                 .Throws(new TítuloInválidoExceção());
-            var console = new ConsoleUI(serviçoTarefa);
 
             console.CriarTarefa();
 
@@ -97,9 +97,6 @@ namespace ToDoUnitTest.Adapters.Driving
             using var saídaDoConsole = new StringWriter();
             Console.SetIn(entradaDoConsole);
             Console.SetOut(saídaDoConsole);
-            
-            var serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
-            var console = new ConsoleUI(serviçoTarefa);
 
             console.ExcluirTarefa();
 
@@ -111,10 +108,9 @@ namespace ToDoUnitTest.Adapters.Driving
         {
             uint id = 1;
             using var entradaDoConsole = new StringReader("1");
+            using var saídaDoConsole = new StringWriter();
             Console.SetIn(entradaDoConsole);
-            
-            var serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
-            var console = new ConsoleUI(serviçoTarefa);
+            Console.SetOut(saídaDoConsole);
             
             console.ExcluirTarefa();
             
