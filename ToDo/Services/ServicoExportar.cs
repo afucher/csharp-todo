@@ -6,17 +6,15 @@ namespace ToDo.Services
     public class ServiçoExportar
     {
         private readonly IFonteDadosTarefas _fonteDeDados;
-        private readonly IExportador _exportador;
 
-        public ServiçoExportar(IFonteDadosTarefas fonteDeDados, IExportador exportador)
+        public ServiçoExportar(IFonteDadosTarefas fonteDeDados)
         {
             _fonteDeDados = fonteDeDados;
-            _exportador = exportador;
         }
 
-        public void Exportar()
+        public virtual void Exportar(IExportador exportador)
         {
-            _exportador.Exportar(_fonteDeDados.ObterTarefas());
+            exportador.Exportar(_fonteDeDados.ObterTarefas());
         }
     }
 }

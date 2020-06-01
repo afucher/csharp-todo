@@ -9,15 +9,18 @@ namespace ToDo
     {
         static void Main(string[] args)
         {
-            var serviçoTarefa = new ServiçoTarefa(new TarefasEmMemória());
+            var fonteDeDados = new TarefasEmMemória();
+            var serviçoTarefa = new ServiçoTarefa(fonteDeDados);
+            var serviçoExportar = new ServiçoExportar(fonteDeDados);
             
-            var console = new ConsoleUI(serviçoTarefa);
+            var console = new ConsoleUI(serviçoTarefa, serviçoExportar);
             
             console.MostrarTarefas();
             console.CriarTarefa();
             console.MostrarTarefas();
-            console.ExcluirTarefa();
+            console.CriarTarefa();
             console.MostrarTarefas();
+            console.ExportarTarefas();
 
         }
     }

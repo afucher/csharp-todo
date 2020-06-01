@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using ToDo.Exceptions;
 using ToDo.Services;
@@ -9,10 +10,12 @@ namespace ToDo.Adapters.Driving
     public class ConsoleUI
     {
         private readonly ServiçoTarefa _serviçoTarefa;
+        private readonly ServiçoExportar _serviçoExportar;
 
-        public ConsoleUI(ServiçoTarefa serviçoTarefa)
+        public ConsoleUI(ServiçoTarefa serviçoTarefa, ServiçoExportar serviçoExportar)
         {
             _serviçoTarefa = serviçoTarefa;
+            _serviçoExportar = serviçoExportar;
         }
 
         public void MostrarTarefas()
@@ -54,6 +57,13 @@ namespace ToDo.Adapters.Driving
             var id = ReadLine();
             _serviçoTarefa.ExcluirTarefa(Convert.ToUInt32(id));
             WriteLine("Tarefa excluída.");
+        }
+
+        public void ExportarTarefas()
+        {
+            Write("Arquivo destino: ");
+            var arquivo = ReadLine();
+            _serviçoExportar.Exportar(new ExportadorArquivo(new StreamWriter(arquivo)));
         }
     }
 }

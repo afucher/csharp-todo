@@ -15,13 +15,15 @@ namespace ToDoUnitTest.Adapters.Driving
 {
     public class ConsoleUITeste
     {
-        private ConsoleUI console;
-        private ServiçoTarefa serviçoTarefa;
+        private ConsoleUI _console;
+        private ServiçoTarefa _serviçoTarefa;
+        private ServiçoExportar _serviçoExportar;
         [SetUp]
         public void SetUp()
         {
-            serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
-            console = new ConsoleUI(serviçoTarefa);
+            _serviçoTarefa = Substitute.For<ServiçoTarefa>(Substitute.For<IFonteDadosTarefas>());
+            _serviçoExportar = Substitute.For<ServiçoExportar>(Substitute.For<IFonteDadosTarefas>());
+            _console = new ConsoleUI(_serviçoTarefa, _serviçoExportar);
         }
         [Test]
         public void DeveImprimirMensagemDeListaVazia_QuandoNãoHouverTarefas()
@@ -29,7 +31,7 @@ namespace ToDoUnitTest.Adapters.Driving
             using var saídaDoConsole = new StringWriter();
             Console.SetOut(saídaDoConsole);
 
-            console.MostrarTarefas();
+            _console.MostrarTarefas();
             
             var consoleOutput = saídaDoConsole.ToString();
             consoleOutput.Should().Be("Nenhuma tarefa" + Environment.NewLine);
@@ -41,7 +43,7 @@ namespace ToDoUnitTest.Adapters.Driving
             using var saídaDoConsole = new StringWriter();
             Console.SetOut(saídaDoConsole);
             
-            serviçoTarefa
+            _serviçoTarefa
                 .ObterTarefas()
                 .Returns(new[]
                 {
@@ -49,7 +51,7 @@ namespace ToDoUnitTest.Adapters.Driving
                     new Tarefa(3, "Outra Tarefa")
                 });
             
-            console.MostrarTarefas();
+            _console.MostrarTarefas();
             
             var consoleOutput = saídaDoConsole.ToString();
             consoleOutput.Should().Be("[1] - Primeira Tarefa" + Environment.NewLine + "[3] - Outra Tarefa" + Environment.NewLine);
@@ -63,11 +65,11 @@ namespace ToDoUnitTest.Adapters.Driving
             Console.SetIn(entradaDoConsole);
             Console.SetOut(saídaDoConsole);
 
-            serviçoTarefa
+            _serviçoTarefa
                 .CriaTarefa("Título da minha tarefa")
                 .Returns(new Tarefa(34, "Título da minha tarefa"));
 
-            console.CriarTarefa();
+            _console.CriarTarefa();
 
             saídaDoConsole.ToString().Should().Be("Qual o título da tarefa: " + "Tarefa criada com Id: 34" + Environment.NewLine);
         }
@@ -81,11 +83,11 @@ namespace ToDoUnitTest.Adapters.Driving
             Console.SetIn(entradaDoConsole);
             Console.SetOut(saídaDoConsole);
             
-            serviçoTarefa
+            _serviçoTarefa
                 .CriaTarefa("       ")
                 .Throws(new TítuloInválidoExceção());
 
-            console.CriarTarefa();
+            _console.CriarTarefa();
 
             saídaDoConsole.ToString().Should().Be("Qual o título da tarefa: " + "Título inválido para tarefa" + Environment.NewLine);
         }
@@ -98,7 +100,7 @@ namespace ToDoUnitTest.Adapters.Driving
             Console.SetIn(entradaDoConsole);
             Console.SetOut(saídaDoConsole);
 
-            console.ExcluirTarefa();
+            _console.ExcluirTarefa();
 
             saídaDoConsole.ToString().Should().Be("Qual id da tarefa para excluir: " + "Tarefa excluída." + Environment.NewLine);
         }
@@ -112,9 +114,34 @@ namespace ToDoUnitTest.Adapters.Driving
             Console.SetIn(entradaDoConsole);
             Console.SetOut(saídaDoConsole);
             
-            console.ExcluirTarefa();
+            _console.ExcluirTarefa();
             
-            serviçoTarefa.Received().ExcluirTarefa(id);
+            _serviçoTarefa.Received().ExcluirTarefa(id);
+        }
+
+        [Test]
+        public void ExportarTarefas_DevePerguntarQualArquivo()
+        {
+            //Arrange
+            using var saídaDoConsole = new StringWriter();
+            Console.SetOut(saídaDoConsole);
+            
+            //Act
+            _console.ExportarTarefas();
+
+            //Assert
+            saídaDoConsole.ToString().Should().Be("Arquivo destino: ");
+        }
+
+        [Test]
+        public void ExportarTarefas_DeveChamarExportadorPassandoArquivo()
+        {
+            using var entradaDoConsole = new StringReader(@"C:\Temp\meu_arquivo.txt");
+            Console.SetIn(entradaDoConsole);
+
+            _console.ExportarTarefas();
+            
+            _serviçoExportar.Received().Exportar(Arg.Is<IExportador>(x => x.GetType() == typeof(ExportadorArquivo)));
         }
     }
 }

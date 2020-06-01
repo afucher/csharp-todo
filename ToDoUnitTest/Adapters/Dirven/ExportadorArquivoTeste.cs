@@ -12,7 +12,7 @@ namespace ToDoUnitTest.Adapters
         [Test]
         public void Exportar_NãoDeveEscreverNoArquivo_QuandoNãoHouverTarefas()
         {
-            var arquivo = Substitute.For<StreamWriter>(@".\teste.txt");
+            var arquivo = Substitute.For<StreamWriter>(@".\teste1.txt");
             var exportador = new ExportadorArquivo(arquivo);
             
             exportador.Exportar(new Tarefa[]{});
@@ -23,7 +23,7 @@ namespace ToDoUnitTest.Adapters
         [Test]
         public void Exportar_DeveEscreverTarefaNoArquivo()
         {
-            var arquivo = Substitute.For<StreamWriter>("./teste.txt");
+            var arquivo = Substitute.For<StreamWriter>("./teste2.txt");
             var exportador = new ExportadorArquivo(arquivo);
             
             exportador.Exportar(new []{new Tarefa(1, "Minha tarefa")});
@@ -34,7 +34,7 @@ namespace ToDoUnitTest.Adapters
         [Test]
         public void Exportar_DeveEscreverMultiplasTarefasNoArquivo()
         {
-            var arquivo = Substitute.For<StreamWriter>("./teste.txt");
+            var arquivo = Substitute.For<StreamWriter>("./teste3.txt");
             var exportador = new ExportadorArquivo(arquivo);
             var tarefaConcluída = new Tarefa(2, "Minha segunda tarefa");
             tarefaConcluída.Concluir();
@@ -51,6 +51,8 @@ namespace ToDoUnitTest.Adapters
                 arquivo.WriteLine("1##__##Minha tarefa##__##False");
                 arquivo.WriteLine("2##__##Minha segunda tarefa##__##True");
                 arquivo.WriteLine("3##__##Minha terceira tarefa##__##False");
+                arquivo.Flush();
+                arquivo.Close();
             });
         }
     }

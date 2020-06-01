@@ -14,10 +14,10 @@ namespace ToDoUnitTest.Services
             var exportador = Substitute.For<IExportador>();
             var fonteDeDados = Substitute.For<IFonteDadosTarefas>();
             var tarefas = new[] {new Tarefa(1, "Tarefa 1")};
-            var serviçoExportar = new ServiçoExportar(fonteDeDados, exportador);
+            var serviçoExportar = new ServiçoExportar(fonteDeDados);
             fonteDeDados.ObterTarefas().Returns(tarefas);
 
-            serviçoExportar.Exportar();
+            serviçoExportar.Exportar(exportador);
 
             exportador.Received().Exportar(tarefas);
         }
