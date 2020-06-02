@@ -20,6 +20,7 @@ namespace ToDo
             console.MostrarTarefas();
             console.CriarTarefa();
             console.MostrarTarefas();
+            console.ConcluirTarefa();
             console.ExportarTarefas();
 
         }

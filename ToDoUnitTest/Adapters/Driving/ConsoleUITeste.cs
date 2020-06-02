@@ -143,5 +143,33 @@ namespace ToDoUnitTest.Adapters.Driving
             
             _serviçoExportar.Received().Exportar(Arg.Is<IExportador>(x => x.GetType() == typeof(ExportadorArquivo)));
         }
+
+        [Test]
+        public void ConcluirTarefa_DevePerguntarIdDaTarefa()
+        {
+            //Arrange
+            using var saídaDoConsole = new StringWriter();
+            Console.SetOut(saídaDoConsole);
+            
+            //Act
+            _console.ConcluirTarefa();
+
+            //Assert
+            saídaDoConsole.ToString().Should().Be("Tarefa a ser concluída: ");
+        }
+        
+        [Test]
+        public void ConcluirTarefa_DeveChamarServiçoParaConcluirTarefaPassandoIdInformado()
+        {
+            uint id = 1;
+            using var entradaDoConsole = new StringReader("1");
+            using var saídaDoConsole = new StringWriter();
+            Console.SetIn(entradaDoConsole);
+            Console.SetOut(saídaDoConsole);
+            
+            _console.ConcluirTarefa();
+            
+            _serviçoTarefa.Received().ConcluirTarefa(id);
+        }
     }
 }

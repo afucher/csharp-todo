@@ -65,5 +65,12 @@ namespace ToDo.Adapters.Driving
             var arquivo = ReadLine();
             _serviçoExportar.Exportar(new ExportadorArquivo(new StreamWriter(arquivo)));
         }
+
+        public void ConcluirTarefa()
+        {
+            Write("Tarefa a ser concluída: ");
+            var id = ReadLine();
+            _serviçoTarefa.ConcluirTarefa(Convert.ToUInt32(id));
+        }
     }
 }
