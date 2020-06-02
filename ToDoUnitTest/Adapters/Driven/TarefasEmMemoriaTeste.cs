@@ -90,5 +90,19 @@ namespace ToDoUnitTest.Adapters
             tarefas.Should().BeEquivalentTo(tarefa1, tarefa2, tarefa3);
 
         }
+
+        [Test]
+        public void NãoDeveTerEstadoAlterado_QuandoAlterarManualmenteUmaTarefaCriada()
+        {
+            var tarefasEmMemória = new TarefasEmMemória();
+            var tarefa1 = tarefasEmMemória.CriarTarefa(new Tarefa("tarefa 1"));
+            tarefa1.Concluir(); 
+            
+            var tarefas = tarefasEmMemória.ObterTarefas();
+
+            tarefas.First().EstáConcluída().Should().BeFalse();
+        }
+
+
     }
 }

@@ -15,9 +15,10 @@ namespace ToDo.Adapters
 
         public Tarefa CriarTarefa(Tarefa tarefaParaCriar)
         {
-            var tarefa = new Tarefa((uint)_tarefas.Count+1, tarefaParaCriar.Título);
+            var id = (uint)_tarefas.Count+1;
+            var tarefa = new Tarefa(id, tarefaParaCriar.Título);
             _tarefas.Add(tarefa);
-            return tarefa;
+            return new Tarefa(id, tarefa.Título);
         }
 
         public void ExcluirTarefa(uint id)
