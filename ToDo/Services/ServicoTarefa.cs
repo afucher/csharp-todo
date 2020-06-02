@@ -27,5 +27,10 @@ namespace ToDo.Services
         {
             _fonteDadosTarefas.ExcluirTarefa(id);
         }
+
+        public void ConcluirTarefa(uint id)
+        {
+            _fonteDadosTarefas.ConcluirTarefa(id);
+        }
     }
 }

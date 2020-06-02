@@ -86,5 +86,17 @@ namespace ToDoUnitTest.Services
 
             fonteDeDados.Received().ExcluirTarefa(2);
         }
+
+        [Test]
+        public void ConcluirTarefa_DeveConcluirTarefaPassandoId()
+        {
+            var fonteDeDados = Substitute.For<IFonteDadosTarefas>();
+            var serviço = new ServiçoTarefa(fonteDeDados);
+            uint id = 2;
+
+            serviço.ConcluirTarefa(2);
+
+            fonteDeDados.Received().ConcluirTarefa(2);
+        }
     }
 }
