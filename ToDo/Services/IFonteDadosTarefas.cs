@@ -8,5 +8,6 @@ namespace ToDo.Services
         IReadOnlyCollection<Tarefa> ObterTarefas();
         Tarefa CriarTarefa(Tarefa tarefa);
         void ExcluirTarefa(uint id);
+        void ConcluirTarefa(uint id);
     }
 }

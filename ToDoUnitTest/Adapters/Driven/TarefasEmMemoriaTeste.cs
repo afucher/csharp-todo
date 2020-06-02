@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using ToDo.Adapters;
 using ToDo.Models;
@@ -99,10 +100,32 @@ namespace ToDoUnitTest.Adapters
             tarefa1.Concluir(); 
             
             var tarefas = tarefasEmMemória.ObterTarefas();
-
+            
             tarefas.First().EstáConcluída().Should().BeFalse();
         }
 
+        [Test]
+        public void DeveMarcarTarefaComoConcluída()
+        {
+            var tarefasEmMemória = new TarefasEmMemória();
+            var tarefa1 = tarefasEmMemória.CriarTarefa(new Tarefa("tarefa 1"));
 
+            tarefasEmMemória.ConcluirTarefa((uint)tarefa1.Id);
+        
+            var tarefas = tarefasEmMemória.ObterTarefas();
+            tarefas.First().EstáConcluída().Should().BeTrue();
+        }
+        
+        [Test]
+        public void NãoDeveMarcarTarefaComoConcluída_QuandoIdNãoExistir()
+        {
+            var tarefasEmMemória = new TarefasEmMemória();
+            tarefasEmMemória.CriarTarefa(new Tarefa("tarefa 1"));
+
+            tarefasEmMemória.ConcluirTarefa(2);
+        
+            var tarefas = tarefasEmMemória.ObterTarefas();
+            tarefas.First().EstáConcluída().Should().BeFalse();
+        }
     }
 }

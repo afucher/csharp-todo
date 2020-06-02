@@ -25,5 +25,12 @@ namespace ToDo.Adapters
         {
             _tarefas.RemoveAll(tarefa => tarefa.Id.Equals(id));
         }
+
+        public void ConcluirTarefa(uint id)
+        {
+            _tarefas
+                .Find(tarefa => tarefa.Id.Equals(id))?
+                .Concluir();
+        }
     }
 }
