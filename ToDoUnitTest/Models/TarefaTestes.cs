@@ -70,5 +70,15 @@ namespace ToDoUnitTest.Models
             //Assert
             Assert.True(tarefa.EstáConcluída());
         }
+
+        [Test]
+        public void DeveConstruirTarefaComoConcluída()
+        {
+            var tarefa = new Tarefa(1, "qlqr", true);
+
+            var concluída = tarefa.EstáConcluída();
+
+            concluída.Should().BeTrue();
+        }
     }
 }

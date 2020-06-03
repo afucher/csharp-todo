@@ -16,9 +16,10 @@ namespace ToDo.Models
             _concluída = false;
         }
 
-        public Tarefa(uint id, string título) : this(título)
+        public Tarefa(uint id, string título, bool concluída = false) : this(título)
         {
             Id = id;
+            _concluída = concluída;
         }
 
         public bool EstáConcluída() => _concluída;

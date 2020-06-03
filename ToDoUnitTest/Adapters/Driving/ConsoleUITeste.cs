@@ -124,6 +124,8 @@ namespace ToDoUnitTest.Adapters.Driving
         {
             //Arrange
             using var saídaDoConsole = new StringWriter();
+            using var entradaDoConsole = new StringReader("./teste");
+            Console.SetIn(entradaDoConsole);
             Console.SetOut(saídaDoConsole);
             
             //Act
@@ -137,7 +139,9 @@ namespace ToDoUnitTest.Adapters.Driving
         public void ExportarTarefas_DeveChamarExportadorPassandoArquivo()
         {
             using var entradaDoConsole = new StringReader(@"C:\Temp\meu_arquivo.txt");
+            using var saídaDoConsole = new StringWriter();
             Console.SetIn(entradaDoConsole);
+            Console.SetOut(saídaDoConsole);
 
             _console.ExportarTarefas();
             
@@ -149,6 +153,8 @@ namespace ToDoUnitTest.Adapters.Driving
         {
             //Arrange
             using var saídaDoConsole = new StringWriter();
+            using var entradaDoConsole = new StringReader("");
+            Console.SetIn(entradaDoConsole);
             Console.SetOut(saídaDoConsole);
             
             //Act
