@@ -13,17 +13,19 @@ namespace ToDoIntegrationTest.Adapters
         private static string parametrosConexão =
             "Server=localhost;Port=5432;User Id=postgres;Password=postgres;Database=todo_test";
 
+        private NpgsqlConnection _conexão;
+
         [SetUp]
         public void SetUp()
         {
-            var conexão = new NpgsqlConnection(parametrosConexão);
-            conexão.Execute("delete from public.tarefas");
+            _conexão = new NpgsqlConnection(parametrosConexão);
+            _conexão.Execute("delete from public.tarefas");
         }
         
         [Test]
         public void DeveRetornarListaVaziaDeTarefas()
         {
-            var tarefasDapper = new TarefasDapperPG(new NpgsqlConnection(parametrosConexão));
+            var tarefasDapper = new TarefasDapperPG(_conexão);
 
             var tarefas = tarefasDapper.ObterTarefas();
 
@@ -31,12 +33,11 @@ namespace ToDoIntegrationTest.Adapters
         }
         
         [Test]
-        public void DeveCriarERetornarListaComTarefaCriada()
+        public void DeveRetornarListaComJáExistentes()
         {
-            var conexão = new NpgsqlConnection(parametrosConexão); 
-            var tarefasDapper = new TarefasDapperPG(conexão);
+            var tarefasDapper = new TarefasDapperPG(_conexão);
             
-            var count = conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
+            var count = _conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
                 new[] { new { Id=1, Título="meu título", Concluída=true }}
             );
             
@@ -44,6 +45,22 @@ namespace ToDoIntegrationTest.Adapters
 
             tarefas.Should().BeEquivalentTo(new { Id=1, Título="meu título"});
             tarefas.First().EstáConcluída().Should().BeTrue();
+        }
+
+        [Test]
+        public void DeveCriarTarefaComId1ENãoConcluída()
+        {
+            var tarefasDapper = new TarefasDapperPG(_conexão);
+
+            tarefasDapper.CriarTarefa(new Tarefa("tarefa para ser criada"));
+
+            var tarefas = _conexão
+                .Query(@"select * from public.tarefas
+                                        where id = 1 AND 
+                                              titulo = 'tarefa para ser criada' AND 
+                                              concluida = false");
+
+            tarefas.Should().HaveCount(1);
         }
     }
 }

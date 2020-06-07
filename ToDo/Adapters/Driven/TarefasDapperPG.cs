@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
@@ -17,13 +18,19 @@ namespace ToDo.Adapters
         }
         public IReadOnlyCollection<Tarefa> ObterTarefas()
         {
-            var tarefas = _conexão.Query<Tarefa>("select id as Id, titulo as Título, concluida as Concluída from public.tarefas");
-            return tarefas.ToArray();
+            return _conexão
+                    .Query("select id, titulo, concluida from public.tarefas")
+                    .Select(tarefa => new Tarefa(Convert.ToUInt32(tarefa.id), tarefa.titulo, tarefa.concluida))
+                    .ToArray();
         }
 
         public Tarefa CriarTarefa(Tarefa tarefa)
         {
-            return tarefa;
+            var tarefaNoBanco = new Tarefa(1, tarefa.Título, tarefa.EstáConcluída());
+            var count = _conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
+                new[] { new {Id = (int)tarefaNoBanco.Id, tarefaNoBanco.Título, Concluída=tarefa.EstáConcluída() }}
+            );
+            return tarefaNoBanco;
         }
 
         public void ExcluirTarefa(uint id)
