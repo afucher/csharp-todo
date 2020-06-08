@@ -47,7 +47,7 @@ namespace ToDo.Adapters
 
         public void ConcluirTarefa(uint id)
         {
-            throw new System.NotImplementedException();
+            _conexão.Execute(@"UPDATE public.tarefas SET concluida = true WHERE id = @Id", new {Id = (int)id});
         }
     }
 }

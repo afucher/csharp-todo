@@ -122,5 +122,48 @@ namespace ToDoIntegrationTest.Adapters
                 new {id = 1, titulo = "meu título"},
                                 new {id = 2, titulo = "segunda tarefa"});
         }
+
+        [Test]
+        public void DeveConcluirTarefaDeAcordoComIdPassado()
+        {
+            var tarefasDapper = new TarefasDapperPG(_conexão);
+            uint idParaConcluir = 2;
+            _conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
+                new[]
+                {
+                    new { Id=1, Título="meu título", Concluída=false },
+                    new { Id=2, Título="segunda tarefa", Concluída=false }
+                }
+            );
+            
+            tarefasDapper.ConcluirTarefa(idParaConcluir);
+            
+            var concluída = (bool)_conexão.ExecuteScalar(
+                @"SELECT concluida FROM public.tarefas WHERE id = @Id", 
+                new {Id = (int)idParaConcluir});
+
+            concluída.Should().BeTrue();
+        }
+        
+        [Test]
+        public void ConcluirTarefa_DeveDeixarTarefaConcluída_QuandoTarefaJáEstavaConcluída()
+        {
+            var tarefasDapper = new TarefasDapperPG(_conexão);
+            uint idParaConcluir = 1;
+            _conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
+                new[]
+                {
+                    new { Id=1, Título="meu título", Concluída=true }
+                }
+            );
+            
+            tarefasDapper.ConcluirTarefa(idParaConcluir);
+            
+            var concluída = (bool)_conexão.ExecuteScalar(
+                @"SELECT concluida FROM public.tarefas WHERE id = @Id", 
+                new {Id = (int)idParaConcluir});
+
+            concluída.Should().BeTrue();
+        }
     }
 }
