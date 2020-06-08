@@ -28,7 +28,7 @@ namespace ToDo.Adapters
         {
             var tarefaNoBanco = new Tarefa((uint)PróximoId(), tarefa.Título, tarefa.EstáConcluída());
             
-            var count = _conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
+            _conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
                 new[] { new {Id = (int)tarefaNoBanco.Id, tarefaNoBanco.Título, Concluída=tarefa.EstáConcluída() }}
             );
             return tarefaNoBanco;
