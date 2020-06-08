@@ -26,11 +26,18 @@ namespace ToDo.Adapters
 
         public Tarefa CriarTarefa(Tarefa tarefa)
         {
-            var tarefaNoBanco = new Tarefa(1, tarefa.Título, tarefa.EstáConcluída());
+            var tarefaNoBanco = new Tarefa((uint)PróximoId(), tarefa.Título, tarefa.EstáConcluída());
+            
             var count = _conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
                 new[] { new {Id = (int)tarefaNoBanco.Id, tarefaNoBanco.Título, Concluída=tarefa.EstáConcluída() }}
             );
             return tarefaNoBanco;
+        }
+
+        private int PróximoId()
+        {
+            var últimoId = _conexão.ExecuteScalar(@"SELECT MAX(id) FROM public.tarefas");
+            return (int?) últimoId + 1 ?? 1;
         }
 
         public void ExcluirTarefa(uint id)

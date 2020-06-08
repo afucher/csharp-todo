@@ -62,5 +62,19 @@ namespace ToDoIntegrationTest.Adapters
 
             tarefas.Should().HaveCount(1);
         }
+        
+        [Test]
+        public void DeveCriarTarefasComIdSequencial()
+        {
+            var tarefasDapper = new TarefasDapperPG(_conexão);
+
+            var tarefa1 = tarefasDapper.CriarTarefa(new Tarefa("tarefa para ser criada"));
+            var tarefa2 = tarefasDapper.CriarTarefa(new Tarefa("segunda tarefa"));
+            var tarefa3 = tarefasDapper.CriarTarefa(new Tarefa("terceira tarefa"));
+
+            tarefa1.Id.Should().Be(1);
+            tarefa2.Id.Should().Be(2);
+            tarefa3.Id.Should().Be(3);
+        }
     }
 }
