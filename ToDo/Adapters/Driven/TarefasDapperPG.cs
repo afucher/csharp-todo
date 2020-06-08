@@ -42,7 +42,7 @@ namespace ToDo.Adapters
 
         public void ExcluirTarefa(uint id)
         {
-            throw new System.NotImplementedException();
+            _conexão.Execute(@"DELETE FROM public.tarefas WHERE id = @Id", new {Id = (int)id});
         }
 
         public void ConcluirTarefa(uint id)

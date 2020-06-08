@@ -76,5 +76,51 @@ namespace ToDoIntegrationTest.Adapters
             tarefa2.Id.Should().Be(2);
             tarefa3.Id.Should().Be(3);
         }
+
+        [Test]
+        public void DeveExcluirTarefa()
+        {
+            var tarefasDapper = new TarefasDapperPG(_conexão);
+            uint idParaExcluir = 1;
+            _conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
+                new[]
+                {
+                    new { Id=1, Título="meu título", Concluída=true },
+                    new { Id=2, Título="segunda tarefa", Concluída=true }
+                }
+            );
+            
+            tarefasDapper.ExcluirTarefa(idParaExcluir);
+            
+            var tarefas = _conexão
+                .Query(@"select id, titulo from public.tarefas")
+                .Select(item => new {id = item.id, titulo = item.titulo});
+            
+            tarefas.Should().BeEquivalentTo(new {id = 2, titulo = "segunda tarefa"});
+        }
+
+        [Test]
+        public void ExcluirTarefaNãoDeveFazerNada_QuandoIdNãoExistir()
+        {
+            var tarefasDapper = new TarefasDapperPG(_conexão);
+            uint idParaExcluir = 3;
+            _conexão.Execute(@"insert into public.tarefas(id, titulo, concluida) values (@Id, @Título, @Concluída)",
+                new[]
+                {
+                    new { Id=1, Título="meu título", Concluída=true },
+                    new { Id=2, Título="segunda tarefa", Concluída=true }
+                }
+            );
+            
+            tarefasDapper.ExcluirTarefa(idParaExcluir);
+            
+            var tarefas = _conexão
+                .Query(@"select id, titulo from public.tarefas")
+                .Select(item => new {id = item.id, titulo = item.titulo});
+            
+            tarefas.Should().BeEquivalentTo(
+                new {id = 1, titulo = "meu título"},
+                                new {id = 2, titulo = "segunda tarefa"});
+        }
     }
 }
