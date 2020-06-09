@@ -6,8 +6,9 @@ Construído em live: [twitch.tv/afucher](twitch.tv/afucher)
 
 Itens para fazer:  
 [x] Deixar usuário completar uma tarefa  
-[ ] Gravar no banco de dados (fonte de dados)  
+[/] Gravar no banco de dados (fonte de dados)  
   [x] Dapper  
-  [ ] EF / NHibernate  
+  [x] EF  
+  [ ] NHibernate    
 [ ] Exportar tarefas concluídas  
 [ ] Exportar tarefas não concluídas  
