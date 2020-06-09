@@ -17,7 +17,9 @@ namespace ToDoIntegrationTest.Adapters
         [SetUp]
         public void SetUp()
         {
-            contexto = new TarefasDbContext(new DbContextOptionsBuilder().UseNpgsql(parametrosConexão).Options);
+            contexto = new TarefasDbContext(new DbContextOptionsBuilder()
+                .UseNpgsql(parametrosConexão)
+                .Options);
             contexto.Database.ExecuteSqlRaw("TRUNCATE TABLE public.tarefas");
         }
 
@@ -77,6 +79,43 @@ namespace ToDoIntegrationTest.Adapters
             tarefa1.Id.Should().Be(1);
             tarefa2.Id.Should().Be(2);
             tarefa3.Id.Should().Be(3);
+        }
+        
+        
+        [Test]
+        public void DeveExcluirTarefa()
+        {
+            var tarefasEFCore = new TarefasEFCorePG(contexto);
+            uint idParaExcluir = 1;
+            contexto.Tarefas.AddRange(
+                new TarefaDB {id = 1, titulo = "meu título", concluida = true},
+                new TarefaDB {id = 2, titulo = "segunda tarefa", concluida = true});
+            contexto.SaveChanges();
+            
+            tarefasEFCore.ExcluirTarefa(idParaExcluir);
+            
+            var tarefas = contexto.Tarefas.ToArray();
+            
+            tarefas.Should().BeEquivalentTo(new {id = 2, titulo = "segunda tarefa"});
+        }
+
+        [Test]
+        public void ExcluirTarefaNãoDeveFazerNada_QuandoIdNãoExistir()
+        {
+            var tarefasEFCore = new TarefasEFCorePG(contexto);
+            uint idParaExcluir = 3;
+            contexto.Tarefas.AddRange(
+                new TarefaDB {id = 1, titulo = "meu título", concluida = true},
+                            new TarefaDB {id = 2, titulo = "segunda tarefa", concluida = true});
+            contexto.SaveChanges();
+            
+            tarefasEFCore.ExcluirTarefa(idParaExcluir);
+
+            var tarefas = contexto.Tarefas.ToArray();
+
+            tarefas.Should().BeEquivalentTo(
+                new {id = 1, titulo = "meu título"},
+                new {id = 2, titulo = "segunda tarefa"});
         }
     }
 }

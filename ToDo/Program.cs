@@ -24,9 +24,9 @@ namespace ToDo
             console.MostrarTarefas();
             console.CriarTarefa();
             console.MostrarTarefas();
-            // console.ExcluirTarefa();
+            console.ExcluirTarefa();
             // console.CriarTarefa();
-            // console.MostrarTarefas();
+            console.MostrarTarefas();
             // console.ConcluirTarefa();
             // console.MostrarTarefas();
             //console.ExportarTarefas();

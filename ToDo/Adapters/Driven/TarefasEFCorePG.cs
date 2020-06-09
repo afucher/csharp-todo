@@ -34,7 +34,11 @@ namespace ToDo.Adapters
 
         public void ExcluirTarefa(uint id)
         {
-            throw new System.NotImplementedException();
+            var tarefa = _contexto.Tarefas.FirstOrDefault(tarefa => tarefa.id == (int)id);
+            if(tarefa == null) return;
+            
+            _contexto.Tarefas.Remove(tarefa);
+            _contexto.SaveChanges();
         }
 
         public void ConcluirTarefa(uint id)
