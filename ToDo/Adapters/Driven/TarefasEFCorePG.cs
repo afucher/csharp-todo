@@ -43,7 +43,11 @@ namespace ToDo.Adapters
 
         public void ConcluirTarefa(uint id)
         {
-            throw new System.NotImplementedException();
+            var tarefa = _contexto.Tarefas.SingleOrDefault(tarefa => tarefa.id == (int)id);
+            if(tarefa == null) return;
+
+            tarefa.concluida = true;
+            _contexto.SaveChanges();
         }
     }
 }

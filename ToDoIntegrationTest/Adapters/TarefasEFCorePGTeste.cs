@@ -117,5 +117,39 @@ namespace ToDoIntegrationTest.Adapters
                 new {id = 1, titulo = "meu título"},
                 new {id = 2, titulo = "segunda tarefa"});
         }
+        
+        [Test]
+        public void DeveConcluirTarefaDeAcordoComIdPassado()
+        {
+            var tarefasEFCore = new TarefasEFCorePG(contexto);
+            int idParaConcluir = 2;
+            contexto.Tarefas.AddRange(
+                new TarefaDB {id = 1, titulo = "meu título", concluida = false},
+                new TarefaDB {id = 2, titulo = "segunda tarefa", concluida = false});
+            contexto.SaveChanges();
+            
+            tarefasEFCore.ConcluirTarefa((uint)idParaConcluir);
+            
+            var tarefas = contexto.Tarefas.FromSqlInterpolated(
+                $"SELECT * FROM public.tarefas WHERE id = {idParaConcluir}").ToArray();
+
+            tarefas.Should().BeEquivalentTo(new {concluida = true});
+        }
+        
+        [Test]
+        public void ConcluirTarefa_DeveDeixarTarefaConcluída_QuandoTarefaJáEstavaConcluída()
+        {
+            var tarefasEFCore = new TarefasEFCorePG(contexto);
+            uint idParaConcluir = 1;
+            contexto.Tarefas.Add(new TarefaDB {id = 1, titulo = "meu título", concluida = true});
+            contexto.SaveChanges();
+            
+            tarefasEFCore.ConcluirTarefa(idParaConcluir);
+            
+            var tarefas = contexto.Tarefas.FromSqlInterpolated(
+                $"SELECT * FROM public.tarefas WHERE id = {idParaConcluir}").ToArray();
+
+            tarefas.Should().BeEquivalentTo(new {concluida = true});
+        }
     }
 }
