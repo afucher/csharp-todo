@@ -25,7 +25,11 @@ namespace ToDo.Adapters
 
         public Tarefa CriarTarefa(Tarefa tarefa)
         {
-            throw new System.NotImplementedException();
+            var últimoId = _contexto.Tarefas.Max(tarefa => (int?)tarefa.id) ?? 0;
+            var próximoId = últimoId + 1;
+            _contexto.Tarefas.Add(new TarefaDB{id = próximoId, titulo = tarefa.Título, concluida = tarefa.EstáConcluída()});
+            _contexto.SaveChanges();
+            return new Tarefa((uint)próximoId, tarefa.Título, tarefa.EstáConcluída());
         }
 
         public void ExcluirTarefa(uint id)

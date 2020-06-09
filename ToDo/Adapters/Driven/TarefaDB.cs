@@ -6,7 +6,8 @@ namespace ToDo.Adapters
     [Table("tarefas")]
     public class TarefaDB
     {
-        [Key] public int id { get; set; }
+        [Key]
+        public int id { get; set; }
         public string titulo { get; set; }
         public bool concluida { get; set; }
     }

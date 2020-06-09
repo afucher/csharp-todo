@@ -3,6 +3,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using ToDo.Adapters;
+using ToDo.Models;
 
 namespace ToDoIntegrationTest.Adapters
 {
@@ -45,6 +46,37 @@ namespace ToDoIntegrationTest.Adapters
 
             tarefas.Should().BeEquivalentTo(new { Id=1, Título="meu título"});
             tarefas.First().EstáConcluída().Should().BeTrue();
+        }
+        
+        [Test]
+        public void DeveCriarTarefaComId1ENãoConcluída()
+        {
+            var tarefasEFCore = new TarefasEFCorePG(contexto);
+
+            tarefasEFCore.CriarTarefa(new Tarefa("tarefa para ser criada"));
+
+            var tarefas = contexto.Tarefas
+                .FromSqlRaw(@"select * from public.tarefas
+                                        where id = 1 AND 
+                                              titulo = 'tarefa para ser criada' AND 
+                                              concluida = false")
+                .ToList();
+
+            tarefas.Should().HaveCount(1);
+        }
+        
+        [Test]
+        public void DeveCriarTarefasComIdSequencial()
+        {
+            var tarefasEFCore = new TarefasEFCorePG(contexto);
+
+            var tarefa1 = tarefasEFCore.CriarTarefa(new Tarefa("tarefa para ser criada"));
+            var tarefa2 = tarefasEFCore.CriarTarefa(new Tarefa("segunda tarefa"));
+            var tarefa3 = tarefasEFCore.CriarTarefa(new Tarefa("terceira tarefa"));
+
+            tarefa1.Id.Should().Be(1);
+            tarefa2.Id.Should().Be(2);
+            tarefa3.Id.Should().Be(3);
         }
     }
 }

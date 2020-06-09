@@ -21,8 +21,8 @@ namespace ToDo
             
             var console = new ConsoleUI(serviçoTarefa, serviçoExportar);
             
-            // console.MostrarTarefas();
-            // console.CriarTarefa();
+            console.MostrarTarefas();
+            console.CriarTarefa();
             console.MostrarTarefas();
             // console.ExcluirTarefa();
             // console.CriarTarefa();
