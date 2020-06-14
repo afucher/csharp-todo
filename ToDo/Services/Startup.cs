@@ -16,7 +16,7 @@ namespace ToDo.Services
     {
         public IConfigurationRoot Configuration { get; }
         
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment  env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
