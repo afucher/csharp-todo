@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Testing;
+using NSubstitute;
 using NUnit.Framework;
-using ToDo.Services;
+using ToDo.Models;
 
 namespace ToDoIntegrationTest
 {
@@ -42,6 +43,7 @@ namespace ToDoIntegrationTest
         [Test]
         public async Task RetornaTarefasNaRotaBaseDeTarefasUsandoController()
         {
+            _factory.FonteDados.ObterTarefas().Returns(new Tarefa[] {});
             var result = await _client.GetAsync("/api/tarefas");
             result.StatusCode.Should().Be(HttpStatusCode.OK);
             result.Content.Headers.ContentType.MediaType.Should().Be("application/json");
