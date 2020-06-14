@@ -1,7 +1,9 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 using ToDo.Services;
@@ -26,6 +28,24 @@ namespace ToDoIntegrationTest
             var result = await _client.GetAsync("/");
             result.StatusCode.Should().Be(HttpStatusCode.OK);
             result.Content.ReadAsStringAsync().Result.Should().Be("Aloha Mundo!");
+        }
+
+        [Test]
+        public async Task RetornaTarefasNaRotaBaseDeTarefasSemUsarController()
+        {
+            var result = await _client.GetAsync("/tarefas");
+            result.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.Content.Headers.ContentType.MediaType.Should().Be("application/json");
+            result.Content.ReadAsStringAsync().Result.Should().Be("[]");  
+        }
+        
+        [Test]
+        public async Task RetornaTarefasNaRotaBaseDeTarefasUsandoController()
+        {
+            var result = await _client.GetAsync("/api/tarefas");
+            result.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.Content.Headers.ContentType.MediaType.Should().Be("application/json");
+            result.Content.ReadAsStringAsync().Result.Should().Be("[]");  
         }
         
         [OneTimeTearDown]
