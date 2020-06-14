@@ -24,8 +24,8 @@ namespace ToDoIntegrationTest
         public async Task RetornaAlohaMundoNaRotaPadrão()
         {
             var result = await _client.GetAsync("/");
-            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.AreEqual(result.Content.ReadAsStringAsync().Result, "Aloha Mundo!");
+            result.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.Content.ReadAsStringAsync().Result.Should().Be("Aloha Mundo!");
         }
         
         [OneTimeTearDown]
