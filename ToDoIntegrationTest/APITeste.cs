@@ -25,7 +25,7 @@ namespace ToDoIntegrationTest
         {
             var result = await _client.GetAsync("/");
             Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            Assert.AreEqual(result.Content.ReadAsStringAsync().Result, "Aloha Mundo");
+            Assert.AreEqual(result.Content.ReadAsStringAsync().Result, "Aloha Mundo!");
         }
         
         [OneTimeTearDown]
