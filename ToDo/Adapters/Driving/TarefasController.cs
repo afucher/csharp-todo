@@ -27,6 +27,14 @@ namespace ToDo.Adapters.Driving
                 .ObterTarefas()
                 .Select(tarefa => new {id = tarefa.Id, titulo = tarefa.Título, concluida = tarefa.EstáConcluída()}));
         }
+
+        [HttpPost]
+        public ActionResult<Object> CriarTarefa(TarefaDTO tarefaParaCriar)
+        {
+            var tarefa = _serviçoTarefa.CriaTarefa(tarefaParaCriar.titulo);
+            
+            return new ActionResult<Object>(new {id = tarefa.Id, titulo = tarefa.Título, concluida = tarefa.EstáConcluída()});
+        }
     }
 
 }

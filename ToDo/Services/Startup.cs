@@ -30,7 +30,8 @@ namespace ToDo.Services
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped(provider => new ServiçoTarefa(new TarefasEmMemória()));
+            services.AddSingleton<IFonteDadosTarefas>(provider => new TarefasEmMemória());
+            services.AddScoped(provider => new ServiçoTarefa(provider.GetService<IFonteDadosTarefas>()));
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

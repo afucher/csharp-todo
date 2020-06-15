@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -69,6 +70,22 @@ namespace ToDoIntegrationTest
             result.StatusCode.Should().Be(HttpStatusCode.OK);
             result.Content.Headers.ContentType.MediaType.Should().Be("application/json");
             result.Content.ReadAsStringAsync().Result.Should().Be(valorEsperado);  
+        }
+        
+        [Test]
+        public async Task CriaTarefaERetornaTarefaCriada()
+        {
+            var valorEsperado = JsonSerializer.Serialize(new {id = 1, titulo = "tarefa nova", concluida = false});
+            _factory.FonteDados
+                .CriarTarefa(Arg.Is<Tarefa>(tarefa => tarefa.Título.Equals("tarefa nova")))
+                .Returns(new Tarefa(1, "tarefa nova"));
+
+            var conteúdo = JsonSerializer.Serialize(new {titulo = "tarefa nova"});
+            var result = await _client.PostAsync("/api/tarefas",new StringContent(conteúdo, Encoding.Default, "application/json"));
+            
+            result.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.Content.Headers.ContentType.MediaType.Should().Be("application/json");
+            result.Content.ReadAsStringAsync().Result.Should().Be(valorEsperado);
         }
         
         [OneTimeTearDown]
