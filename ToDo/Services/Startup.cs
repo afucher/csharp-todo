@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Npgsql;
 using ToDo.Adapters;
 
 namespace ToDo.Services
@@ -31,6 +33,12 @@ namespace ToDo.Services
         {
             services.AddControllers();
             services.AddSingleton<IFonteDadosTarefas>(provider => new TarefasEmMemória());
+            // services.AddScoped<IFonteDadosTarefas>(provider =>
+            //     new TarefasDapperPG(new NpgsqlConnection(Program.parametrosConexão)));
+            // services.AddScoped<IFonteDadosTarefas>(provider =>
+            //     new TarefasEFCorePG(new TarefasDbContext(new DbContextOptionsBuilder().UseNpgsql(Program.parametrosConexão).Options)));
+
+
             services.AddScoped(provider => new ServiçoTarefa(provider.GetService<IFonteDadosTarefas>()));
         }
         

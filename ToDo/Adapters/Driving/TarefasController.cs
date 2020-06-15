@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ToDo.Exceptions;
 using ToDo.Models;
 using ToDo.Services;
 
@@ -31,9 +32,20 @@ namespace ToDo.Adapters.Driving
         [HttpPost]
         public ActionResult<Object> CriarTarefa(TarefaDTO tarefaParaCriar)
         {
-            var tarefa = _serviçoTarefa.CriaTarefa(tarefaParaCriar.titulo);
-            
-            return new ActionResult<Object>(new {id = tarefa.Id, titulo = tarefa.Título, concluida = tarefa.EstáConcluída()});
+            try
+            {
+                var tarefa = _serviçoTarefa.CriaTarefa(tarefaParaCriar.titulo);
+                return new ActionResult<Object>(new
+                {
+                    id = tarefa.Id,
+                    titulo = tarefa.Título,
+                    concluida = tarefa.EstáConcluída()
+                });
+            }
+            catch (TítuloInválidoExceção e)
+            {
+                return UnprocessableEntity(tarefaParaCriar);
+            }
         }
     }
 

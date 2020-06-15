@@ -87,6 +87,15 @@ namespace ToDoIntegrationTest
             result.Content.Headers.ContentType.MediaType.Should().Be("application/json");
             result.Content.ReadAsStringAsync().Result.Should().Be(valorEsperado);
         }
+
+        [Test]
+        public async Task CriaTarefaComTítuloInválidoRetorna422()
+        {
+            var conteúdo = JsonSerializer.Serialize(new {titulo = ""});
+            var result = await _client.PostAsync("/api/tarefas",new StringContent(conteúdo, Encoding.Default, "application/json"));
+            
+            result.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+        }
         
         [OneTimeTearDown]
         public void TearDown()

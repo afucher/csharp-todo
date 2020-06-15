@@ -11,7 +11,7 @@ namespace ToDo
         public static void Executa()
         {
             // var fonteDeDados = new TarefasEmMemória();
-            // var fonteDeDados = new TarefasDapperPG(new NpgsqlConnection(parametrosConexão));
+            // var fonteDeDados = new TarefasDapperPG(new NpgsqlConnection(Program.parametrosConexão));
             var fonteDeDados = new TarefasEFCorePG(new TarefasDbContext(new DbContextOptionsBuilder().UseNpgsql(Program.parametrosConexão).Options));
             var serviçoTarefa = new ServiçoTarefa(fonteDeDados);
             var serviçoExportar = new ServiçoExportar(fonteDeDados);
