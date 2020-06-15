@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ToDo.Models;
@@ -19,9 +21,11 @@ namespace ToDo.Adapters.Driving
         
             
         [HttpGet]
-        public ActionResult<IEnumerable<Tarefa>> ObterTarefas()
+        public ActionResult<IEnumerable<Object>> ObterTarefas()
         {
-            return new ActionResult<IEnumerable<Tarefa>>(_serviçoTarefa.ObterTarefas());
+            return new ActionResult<IEnumerable<Object>>(_serviçoTarefa
+                .ObterTarefas()
+                .Select(tarefa => new {id = tarefa.Id, titulo = tarefa.Título, concluida = tarefa.EstáConcluída()}));
         }
     }
 

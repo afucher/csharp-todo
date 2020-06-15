@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -41,13 +42,33 @@ namespace ToDoIntegrationTest
         }
         
         [Test]
-        public async Task RetornaTarefasNaRotaBaseDeTarefasUsandoController()
+        public async Task RetornaArrayVazioNaRotaBaseDeTarefasUsandoController_QuandoNãoExisteTarefas()
         {
             _factory.FonteDados.ObterTarefas().Returns(new Tarefa[] {});
             var result = await _client.GetAsync("/api/tarefas");
             result.StatusCode.Should().Be(HttpStatusCode.OK);
             result.Content.Headers.ContentType.MediaType.Should().Be("application/json");
             result.Content.ReadAsStringAsync().Result.Should().Be("[]");  
+        }
+        
+        [Test]
+        public async Task RetornaTarefasNaRotaBaseDeTarefasUsandoController()
+        {
+            _factory.FonteDados.ObterTarefas().Returns(new[]
+            {
+                new Tarefa(1, "primeira tarefa", false),
+                new Tarefa(2, "segunda tarefa", true)
+            });
+            var valorEsperado = JsonSerializer.Serialize(new []
+            {
+                new {id = 1, titulo = "primeira tarefa", concluida = false},
+                new {id = 2, titulo = "segunda tarefa", concluida = true}
+            });
+            
+            var result = await _client.GetAsync("/api/tarefas");
+            result.StatusCode.Should().Be(HttpStatusCode.OK);
+            result.Content.Headers.ContentType.MediaType.Should().Be("application/json");
+            result.Content.ReadAsStringAsync().Result.Should().Be(valorEsperado);  
         }
         
         [OneTimeTearDown]
