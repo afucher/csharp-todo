@@ -11,7 +11,7 @@ using ToDo.Models;
 
 namespace ToDoIntegrationTest
 {
-    public class APITeste
+    public class TarefasControllerTeste
     {
         private APIWebApplicationFactory _factory;
         private HttpClient _client;
