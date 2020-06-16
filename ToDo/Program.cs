@@ -14,8 +14,16 @@ namespace ToDo
             "Server=localhost;Port=5432;User Id=postgres;Password=postgres;Database=todo";
         static void Main(string[] args)
         {
-            //ConsoleProgram.Executa();
-            APIProgram.Executa();
+            var tipoDeAplicação = args.Length > 0 ? args[0] : "console";
+            switch (tipoDeAplicação)
+            {
+                case "console" : 
+                    ConsoleProgram.Executa();
+                    break;
+                case "api":
+                    APIProgram.Executa();
+                    break;
+            }
         }
     }
 }

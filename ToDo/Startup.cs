@@ -32,11 +32,11 @@ namespace ToDo.Services
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IFonteDadosTarefas>(provider => new TarefasEmMemória());
+            // services.AddSingleton<IFonteDadosTarefas>(provider => new TarefasEmMemória());
             // services.AddScoped<IFonteDadosTarefas>(provider =>
             //     new TarefasDapperPG(new NpgsqlConnection(Program.parametrosConexão)));
-            // services.AddScoped<IFonteDadosTarefas>(provider =>
-            //     new TarefasEFCorePG(new TarefasDbContext(new DbContextOptionsBuilder().UseNpgsql(Program.parametrosConexão).Options)));
+            services.AddScoped<IFonteDadosTarefas>(provider =>
+                new TarefasEFCorePG(new TarefasDbContext(new DbContextOptionsBuilder().UseNpgsql(Program.parametrosConexão).Options)));
 
 
             services.AddScoped(provider => new ServiçoTarefa(provider.GetService<IFonteDadosTarefas>()));
