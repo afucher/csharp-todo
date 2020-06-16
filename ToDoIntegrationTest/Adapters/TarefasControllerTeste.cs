@@ -97,6 +97,15 @@ namespace ToDoIntegrationTest
             result.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
         }
         
+        [Test]
+        public async Task DeveExcluirTarefaDeAcordoComIdPassadoNaURL()
+        {
+            var result = await _client.DeleteAsync("/api/tarefas/1");
+            
+            result.StatusCode.Should().Be(HttpStatusCode.OK);
+            _factory.FonteDados.Received().ExcluirTarefa(1);
+        }
+
         [OneTimeTearDown]
         public void TearDown()
         {

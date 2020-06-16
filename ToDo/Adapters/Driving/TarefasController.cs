@@ -47,6 +47,13 @@ namespace ToDo.Adapters.Driving
                 return UnprocessableEntity(tarefaParaCriar);
             }
         }
+
+        [HttpDelete("{id}")]
+        public ActionResult ExcluirTarefa(uint id)
+        {
+            _serviçoTarefa.ExcluirTarefa(id);
+            return Ok();
+        }
     }
 
 }
