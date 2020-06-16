@@ -54,6 +54,14 @@ namespace ToDo.Adapters.Driving
             _serviçoTarefa.ExcluirTarefa(id);
             return Ok();
         }
+
+        [HttpPut("{id}/concluir")]
+        public ActionResult ConcluirTarefa(uint id)
+        {
+            _serviçoTarefa.ConcluirTarefa(id);
+            return Ok();
+        }
+        
     }
 
 }

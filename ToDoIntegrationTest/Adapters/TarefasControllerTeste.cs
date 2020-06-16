@@ -106,6 +106,15 @@ namespace ToDoIntegrationTest
             _factory.FonteDados.Received().ExcluirTarefa(1);
         }
 
+        [Test]
+        public async Task DeveConcluirTarefa()
+        {
+            var result = await _client.PutAsync("/api/tarefas/1/concluir",new StringContent(""));
+
+            result.StatusCode.Should().Be(HttpStatusCode.OK);
+            _factory.FonteDados.Received().ConcluirTarefa(1);
+        }
+
         [OneTimeTearDown]
         public void TearDown()
         {
