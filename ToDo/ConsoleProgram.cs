@@ -1,7 +1,4 @@
 ﻿using System.Net.Http;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using ToDo.Adapters;
 using ToDo.Adapters.Driving;
 using ToDo.Services;

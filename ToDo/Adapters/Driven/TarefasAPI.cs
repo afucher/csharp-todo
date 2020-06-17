@@ -24,8 +24,8 @@ namespace ToDo.Adapters
                 .GetStringAsync("http://localhost:5000/api/Tarefas")
                 .Result;
                 
-            return JsonConvert.DeserializeObject<dynamic[]>(resultado)
-                .Select(tarefa => new Tarefa((uint)tarefa.id, (string)tarefa.titulo, (bool)tarefa.concluida))
+            return JsonConvert.DeserializeObject<TarefaDTO[]>(resultado)
+                .Select(tarefa => tarefa.Tarefa())
                 .ToArray();
         }
 
@@ -39,9 +39,9 @@ namespace ToDo.Adapters
                     .Content
                     .ReadAsStringAsync()
                     .Result;
-            var tarefaCriada = JsonConvert.DeserializeObject<dynamic>(resultado);
-            return new Tarefa((uint)tarefaCriada.id, (string)tarefaCriada.titulo, (bool)tarefaCriada.concluida);
-                
+            var tarefaCriada = JsonConvert.DeserializeObject<TarefaDTO>(resultado);
+            return tarefaCriada.Tarefa();
+
         }
 
         public void ExcluirTarefa(uint id)
