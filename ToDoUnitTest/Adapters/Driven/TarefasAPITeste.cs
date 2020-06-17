@@ -27,21 +27,15 @@ namespace ToDoUnitTest.Adapters
         public void DeveRetornarTarefasQueExistem()
         {
             using var httpTest = new HttpTest();
-            var tarefasDaApi = JsonSerializer.Serialize(
-                new[] { new {id = 1, titulo = "tarefa que existe", concluida = false} });
-            // httpTest.RespondWithJson(new StringContent(tarefasDaApi, Encoding.Default, "application/json"));
             httpTest.RespondWithJson(new[] {new {id = 1, titulo = "tarefa que existe", concluida = false}});
             var api = new TarefasAPI(new HttpClient(new FakeHttpClientMessageHandler()));
             
-            
             var tarefas = api.ObterTarefas();
-
             
             httpTest.ShouldHaveCalled("http://localhost:5000/api/Tarefas")
                 .WithVerb(HttpMethod.Get)
                 .Times(1);
             tarefas.Should().HaveCount(1);
-
         }
     }
 }
