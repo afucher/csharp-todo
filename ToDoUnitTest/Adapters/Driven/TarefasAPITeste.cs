@@ -79,5 +79,18 @@ namespace ToDoUnitTest.Adapters
             tarefa.Should().BeEquivalentTo(new {Id = 1, Título = "Minha tarefa"});
             tarefa.EstáConcluída().Should().BeFalse();
         }
+
+        [Test]
+        public void DeveChamarEndpointDeConclusãoComId()
+        {
+            using var httpTest = new HttpTest();
+            var api = new TarefasAPI(new HttpClient(new FakeHttpClientMessageHandler()));
+            
+            api.ConcluirTarefa(3);
+            
+            httpTest.ShouldHaveCalled("http://localhost:5000/api/Tarefas/3/concluir")
+                .WithVerb(HttpMethod.Put)
+                .Times(1);
+        }
     }
 }

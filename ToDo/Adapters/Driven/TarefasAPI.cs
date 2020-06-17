@@ -51,7 +51,7 @@ namespace ToDo.Adapters
 
         public void ConcluirTarefa(uint id)
         {
-            throw new System.NotImplementedException();
+            _httpClient.PutAsync($"http://localhost:5000/api/Tarefas/{id}/concluir",new StringContent(""));
         }
     }
 }
