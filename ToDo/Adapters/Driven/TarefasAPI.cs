@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using Flurl.Http;
 using Newtonsoft.Json;
 using ToDo.Models;
 using ToDo.Services;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace ToDo.Adapters
 {
@@ -29,7 +31,17 @@ namespace ToDo.Adapters
 
         public Tarefa CriarTarefa(Tarefa tarefa)
         {
-            throw new System.NotImplementedException();
+            var tarefaJson = JsonSerializer.Serialize(new {titulo = tarefa.Título});
+            var conteúdo = new StringContent(tarefaJson, Encoding.Default, "application/json");
+            var resultado = _httpClient
+                .PostAsync("http://localhost:5000/api/Tarefas", conteúdo)
+                    .Result
+                    .Content
+                    .ReadAsStringAsync()
+                    .Result;
+            var tarefaCriada = JsonConvert.DeserializeObject<dynamic>(resultado);
+            return new Tarefa((uint)tarefaCriada.id, (string)tarefaCriada.titulo, (bool)tarefaCriada.concluida);
+                
         }
 
         public void ExcluirTarefa(uint id)

@@ -50,5 +50,34 @@ namespace ToDoUnitTest.Adapters
                 .WithVerb(HttpMethod.Delete)
                 .Times(1);
         }
+        
+        [Test]
+        public void DeveChamarEndpointDeCriaçãoPassandoTítulo()
+        {
+            using var httpTest = new HttpTest();
+            httpTest.RespondWithJson(new {id = 1, titulo = "Minha tarefa", concluida = false});
+            var api = new TarefasAPI(new HttpClient(new FakeHttpClientMessageHandler()));
+            
+            api.CriarTarefa(new Tarefa("Minha tarefa"));
+
+            httpTest.ShouldHaveCalled("http://localhost:5000/api/Tarefas")
+                .WithVerb(HttpMethod.Post)
+                .WithContentType("application/json")
+                .WithRequestBody("{\"titulo\":\"Minha tarefa\"}")
+                .Times(1);
+        }
+        
+        [Test]
+        public void DeveRetornarTarefaCriada()
+        {
+            using var httpTest = new HttpTest();
+            httpTest.RespondWithJson(new {id = 1, titulo = "Minha tarefa", concluida = false});
+            var api = new TarefasAPI(new HttpClient(new FakeHttpClientMessageHandler()));
+            
+            var tarefa = api.CriarTarefa(new Tarefa("Minha tarefa"));
+
+            tarefa.Should().BeEquivalentTo(new {Id = 1, Título = "Minha tarefa"});
+            tarefa.EstáConcluída().Should().BeFalse();
+        }
     }
 }
