@@ -34,7 +34,7 @@ namespace ToDo.Adapters
 
         public void ExcluirTarefa(uint id)
         {
-            throw new System.NotImplementedException();
+            _httpClient.DeleteAsync($"http://localhost:5000/api/Tarefas/{id}");
         }
 
         public void ConcluirTarefa(uint id)

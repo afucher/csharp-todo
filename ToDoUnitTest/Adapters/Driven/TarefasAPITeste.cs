@@ -37,5 +37,18 @@ namespace ToDoUnitTest.Adapters
                 .Times(1);
             tarefas.Should().HaveCount(1);
         }
+
+        [Test]
+        public void DeveChamarEndpointParaExclusãoDeTarefaPassandoId()
+        {
+            using var httpTest = new HttpTest();
+            var api = new TarefasAPI(new HttpClient(new FakeHttpClientMessageHandler()));
+            
+            api.ExcluirTarefa(4);
+
+            httpTest.ShouldHaveCalled("http://localhost:5000/api/Tarefas/4")
+                .WithVerb(HttpMethod.Delete)
+                .Times(1);
+        }
     }
 }
